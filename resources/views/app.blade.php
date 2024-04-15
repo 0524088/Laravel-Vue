@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>My SPA</title>
-
+        <script src="{{ asset('js/helper.js') }}"></script>
+        
         <!-- 引入 Vue app -->
         @vite('resources/js/main.js')
     </head>
@@ -11,7 +12,7 @@
             <!-- 建立 Vue Router 連結-->
             <ul>
                 <li>
-                    <router-link to="/home">Home</router-link>
+                    <router-link to="/index">Index</router-link>
                 </li>
             </ul>
             <ul>
