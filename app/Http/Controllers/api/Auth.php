@@ -13,7 +13,7 @@ class Auth extends Controller
     {
         $token = $request->bearerToken();
         return response()->json([
-            'status'  => true,
+            'status'  => false,
             'message' => "用戶已登入"
         ]);
     }
