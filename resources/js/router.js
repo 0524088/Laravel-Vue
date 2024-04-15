@@ -16,17 +16,17 @@ const routes = [
     {
         path: "/login",
         name: "login",
-        component: components.Login,
+        component: components.login,
     },
     {
         path: "/index",
         name: "index",
-        component: components.Index
+        component: components.index
     },
     {
         path: "/about",
         name: "about",
-        component: components.About
+        component: components.about
     }
 ];
 
