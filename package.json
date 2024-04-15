@@ -17,5 +17,8 @@
         "vue": "^3.2.37",
         "vue-loader": "^16.2.0",
         "vue-router": "^4.3.0"
+    },
+    "dependencies": {
+        "nprogress": "^0.2.0"
     }
 }

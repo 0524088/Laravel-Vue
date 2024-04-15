@@ -1,5 +1,6 @@
 import * as components from './components'
 import { createRouter, createWebHistory } from 'vue-router'
+import NProgress from 'nprogress'
 
 // 路由
 const routes = [
@@ -37,12 +38,13 @@ const router = createRouter({
 
 // 中間件 - 驗證登入狀態
 router.beforeEach(async (to) => {
+    NProgress.start();
     let res = await $_fetch({
         url: "/api/auth/checkLoginStatus",
         method: "GET",
         useToken: true
     });
-    
+
     const status = res.status;
     const route  = to.name;
 
@@ -55,5 +57,10 @@ router.beforeEach(async (to) => {
         return { name: "login" };
     }
 });
+
+router.afterEach((to) => {
+    NProgress.done()
+});
+  
 
 export default router;
