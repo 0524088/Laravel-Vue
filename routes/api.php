@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\api\Auth;
+use App\Http\Api\Auth;
 
 
 Route::get('/user', function (Request $request) {
@@ -11,3 +11,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/auth/checkLoginStatus', [Auth::class, 'checkLoginStatus']);
+Route::post('/auth/login', [Auth::class, 'login']);

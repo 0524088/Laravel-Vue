@@ -1,5 +1,5 @@
 // 包裝 es6 fetch
-async function $_fetch({ url, method, data = null, useToken = null }) {
+async function $fetch({ url, method, data = null, useToken = null }) {
     let header = { "Content-Type": "application/json" };
     if (useToken === true) {
         const token = 1; // token

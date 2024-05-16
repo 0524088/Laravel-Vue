@@ -4,16 +4,16 @@
         <div class="shape"></div>
     </div>
 
-    <form>
+    <form @submit.prevent="login">
         <h3>使用者登入</h3>
 
         <label for="username">帳號</label>
-        <input type="text" placeholder="請輸入帳號" id="username">
+        <input v-model="account" type="text" placeholder="請輸入帳號" id="username">
 
         <label for="password">密碼</label>
-        <input type="password" placeholder="請輸入密碼" id="password">
+        <input v-model="password" type="password" placeholder="請輸入密碼" id="password">
 
-        <button class="btn btn-outline-light">登入</button>
+        <button type="submit" id="btn-login" class="btn btn-outline-light">登入</button>
         <!--
         <div class="social">
             <div class="go"><i class="fab fa-google"></i>  Google</div>
@@ -22,6 +22,30 @@
         -->
     </form>
 </template>
+
+<script>
+    export default {
+        data() {
+            return {
+                account: '',
+                password: ''
+            };
+        },
+        methods: {
+            login() {
+                let res = $fetch({
+                    url: "/api/auth/login",
+                    method: "post",
+                    data: {
+                        account: this.account,
+                        password: this.password
+                    }
+                });
+                console.log(res);
+            }
+        }
+    } 
+</script>
 
 <!--Stylesheet-->
 <style media="screen">
@@ -147,6 +171,7 @@
       margin-right: 4px;
     }
 </style>
+
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

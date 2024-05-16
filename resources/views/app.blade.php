@@ -17,7 +17,7 @@
     <body>
         <div id="app">
             <!-- 建立 Vue Router 連結-->
-            <div>
+            <div v-if="Menu">
                 <ul>
                     <li>
                         <router-link to="/index">Index</router-link>
