@@ -38,6 +38,7 @@ const router = createRouter({
 
 // 中間件 - 驗證登入狀態
 router.beforeEach(async (to) => {
+    return;
     NProgress.start();
     let res = await $fetch({
         url: "/api/auth/checkLoginStatus",

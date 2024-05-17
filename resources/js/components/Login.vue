@@ -14,6 +14,7 @@
         <input v-model="password" type="password" placeholder="請輸入密碼" id="password">
 
         <button type="submit" id="btn-login" class="btn btn-outline-light">登入</button>
+        <input @click="logout" type="button" id="btn-test" class="btn btn-outline-light" value="logout">
         <!--
         <div class="social">
             <div class="go"><i class="fab fa-google"></i>  Google</div>
@@ -28,20 +29,35 @@
         data() {
             return {
                 account: '',
-                password: ''
+                password: '',
             };
         },
         methods: {
             login() {
-                let res = $fetch({
-                    url: "/api/auth/login",
+                $fetch({
+                    url: "auth/login",
                     method: "post",
                     data: {
                         account: this.account,
                         password: this.password
                     }
+                })
+                .then((res) => {
+                    localStorage.setItem("token", res.authorisation.token);
                 });
-                console.log(res);
+            },
+            logout() {
+                $fetch({
+                    url: "auth/logout",
+                    method: "get",
+                    useToken: true,
+                    origin: true
+                })
+                .then((res) => {
+                    if (res.status == 200) {
+                        localStorage.clear();
+                    }
+                });
             }
         }
     } 

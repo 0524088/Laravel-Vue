@@ -3,70 +3,103 @@
 namespace App\Http\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth as LaravelAuth;
-use Illuminate\Support\Str;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
+use App\Validators\Validator;
 
-use App\Repository\User as UserRepository;
+use App\Repositorys\User as RepositorysUser;
 
 class Auth
 {
-    private $userRepository;
+    private $repositorysUser;
+    private $validator;
 
-    public function __construct() {
-        $this->userRepository = app(UserRepository::class);
+    public function __construct()
+    {
+        $this->repositorysUser = app(RepositorysUser::class);
+        $this->validator       = app(Validator::class);
     }
 
-    /**
-     * 驗證登入狀態
-     */
-    public function checkLoginStatus(Request $request)
+    public function login(Request $request)
     {
+        // 驗證
+        $validation = $this->validator->verifyInput($request, [
+            "account"  => "required|string",
+            "password" => "required|string"
+        ]);
+
+        if (!$validation["status"])
+            return $validation["return"];
+
+        $credentials = $request->only("account", "password");
+        $token = auth()->attempt($credentials);
+        if (!$token) {
+            return response()->json([
+                "status"  => "error",
+                "message" => "帳號或密碼錯誤",
+            ], 401);
+        }
+
         return response()->json([
-            "status"  => false,
-            "message" => "用戶已登入"
+                "status" => "success",
+                "message" => "登入成功",
+                "user"   => auth()->user(),
+                "authorisation" => [
+                    "token" => $token,
+                    "type"  => "bearer",
+                    "expires_in" => auth()->factory()->getTTL() * 60    // JWT 有效時間/分鐘
+                ]
         ]);
     }
 
-    /**
-     * 登入
-     */
-    public function login(Request $request)
+    public function register(Request $request)
     {
-        try {
-            // 驗證
-            $request->validate([
-                "account"  => "required|string",
-                "password" => "required|string"
-            ]);
+        $validation = $this->validator->verifyInput($request, [
+            "account"  => "required|string",
+            "password" => "required|string"
+        ]);
 
-            // 登入
-            $credentials = $request->only("account", "password");
-            if (LaravelAuth::attempt($credentials)) {
-                $token = Str::random(60);
-                $user = LaravelAuth::user();
-                $user->remember_token = $token;
-                $user->save();
+        if (!$validation["status"])
+            return $validation["return"];
 
-                return response()->json([
-                    "status"  => true,
-                    "message" => "登入成功",
-                    "remember_token" => $token
-                ]);
-            } else {
-                // 认证失败，检查失败原因
-                // $lastAttempted = LaravelAuth::getLastAttempted();
-                return response()->json([
-                    "status"  => false,
-                    "message" => "登入失敗，帳號或密碼錯誤"
-                ]);
-            }
-        } catch(ValidationException $e) {
+        $user = $this->repositorysUser->create($request->account, $request->password);
+        $token = auth()->login($user);
+        return response()->json([
+            "status"  => "success",
+            "message" => "用戶註冊成功",
+            "user"    => $user,
+            "authorisation" => [
+                "token"      => $token,
+                "type"       => "bearer",
+                "expires_in" => auth()->factory()->getTTL() * 60    // JWT 有效時間/分鐘
+            ]
+        ]);
+    }
+
+    public function logout()
+    {
+        if (auth()->check()) {
+            auth()->logout();
             return response()->json([
-                "status"  => false,
-                "message" => $e->getMessage()
+                "status"  => "success",
+                "message" => "登出成功",
+            ]);
+        } else {
+            return response()->json([
+                "status"  => "error",
+                "message" => "尚無登入狀態",
             ]);
         }
+    }
+
+    public function refresh()
+    {
+        return response()->json([
+            "status"        => "success",
+            "user"          => auth()->user(),
+            "authorisation" => [
+                "token" => auth()->refresh(),
+                "type"  => "bearer",
+            ]
+        ]);
     }
 }

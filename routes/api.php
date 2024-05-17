@@ -3,12 +3,17 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\JwtMiddleware;
+
 use App\Http\Api\Auth;
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix("/auth")->controller(Auth::class)->group(function() {
+    Route::post("login", "login");        // 登入
+    Route::post("register", "register");  // 註冊
+    Route::get("logout", "logout")->middleware([JwtMiddleware::class]); // 登出
+});
 
-Route::get('/auth/checkLoginStatus', [Auth::class, 'checkLoginStatus']);
-Route::post('/auth/login', [Auth::class, 'login']);
+Route::middleware([JwtMiddleware::class])->group(function() {
+
+});
