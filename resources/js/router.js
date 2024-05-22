@@ -1,32 +1,62 @@
 import * as components from './components'
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
+import pinia from '@/stores/index.js'
+import useStore from '@/stores/store'
 
 // 路由
 const routes = [
     {
         path: "/",
-        redirect: "/index" // 重定向到 index
+        redirect: "/index", // 重定向到 index
+        meta: {
+            inMenu: false,
+        },
     },
     {
         describe: "未定義的頁面",
         path: '/:pathMatch(.*)*',
-        component: components.http_404
+        component: components.http_404,
+        meta: {
+            inMenu: false,
+        },
     },
     {
         path: "/login",
         name: "login",
         component: components.login,
+        meta: {
+            inMenu: false,
+            text: "Login",
+        },
+    },
+    {
+        path: "/logout",
+        name: "logout",
+        component: components.logout,
+        meta: {
+            inMenu: false,
+            text: "Logout",
+        },
+        
     },
     {
         path: "/index",
         name: "index",
-        component: components.index
+        component: components.index,
+        meta: {
+            inMenu: false,
+            text: "Index",
+        },
     },
     {
         path: "/about",
         name: "about",
-        component: components.about
+        component: components.about,
+        meta: {
+            inMenu: true,
+            text: "About",
+        },
     }
 ];
 
@@ -36,32 +66,44 @@ const router = createRouter({
     routes: routes
 });
 
+const $pinia = useStore(pinia);
+
 // 中間件 - 驗證登入狀態
 router.beforeEach(async (to) => {
-    return;
     NProgress.start();
-    let res = await $fetch({
-        url: "/api/auth/checkLoginStatus",
-        method: "GET",
-        useToken: true
-    });
-
-    const status = res.status;
-    const route  = to.name;
-
-    if (status == true && route == "login") {
-        // 已登入且為登入頁面
-        return { name: "index" };
+    // 透過前端路由
+    if (sessionStorage.getItem("isRouteNavigation")) {
+        const res = await $fetch({
+            url: "/auth/checkLoginStatus",
+            method: "GET",
+            token: $pinia.$state.token
+        });
+    
+        const user = res.user;
+        const route = to.name;
+    
+        if (user && route == "login") {
+            // 已登入且為登入頁面
+            return { name: "index" };
+        }
+        if (!user && route != "login") {
+            // 未登入且非登入頁面
+            return { name: "login" };
+        }
     }
-    if (status != true && route != "login") {
-        // 未登入且非登入頁面
-        return { name: "login" };
+    // 刷新過頁面
+    else {
+        const res = await $fetch({
+            url: "/auth/checkLoginStatus",
+            method: "GET",
+            useToken: true
+        });
     }
 });
 
 router.afterEach((to) => {
-    NProgress.done()
+    sessionStorage.setItem("isRouteNavigation", "true");
+    NProgress.done();
 });
   
-
 export default router;

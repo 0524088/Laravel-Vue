@@ -1,12 +1,17 @@
 // 包裝 es6 fetch
-async function $fetch({ url, method, data = null, useToken = true, origin = false, notApi = false }) {
-    let header = { "Content-Type": "application/json" };
-    if (useToken === true) {
-        header.Authorization = `Bearer ${localStorage.getItem("token")}`;
+async function $fetch({ url, method, data = null, token = "", origin = false, notApi = false }) {
+    if (!token) {
+        token = "token";
     }
+
+    let header = { 
+        "Content-Type" : "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+
     try {
         if (!notApi) {
-            url = `/api/${url}`;
+            url = `/api${url}`;
         }
 
         const response = await fetch(url, {

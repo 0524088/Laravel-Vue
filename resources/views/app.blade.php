@@ -2,8 +2,6 @@
 <html>
     <head>
         <title>My SPA</title>
-        <script src="{{ asset('js/helper.js') }}"></script>
-
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Bootstrap 5 -->
@@ -15,25 +13,12 @@
 
         <!-- 引入 Vue app -->
         @vite('resources/js/main.js')
+
+        <script src="{{ asset('js/helper.js') }}"></script>
     </head>
     <body>
         <div id="app">
-            <!-- 建立 Vue Router 連結-->
-            <div>
-                <ul>
-                    <li>
-                        <router-link to="/index">Index</router-link>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <router-link to="/about">About</router-link>
-                    </li>
-                </ul>
-            </div>
-        
-            <!-- Vue Router 代入的內容 -->
-            <router-view />
+            <Navbar />
         </div>
 
         <!-- NProgress 進度條 -->

@@ -14,7 +14,6 @@
         <input v-model="password" type="password" placeholder="請輸入密碼" id="password">
 
         <button type="submit" id="btn-login" class="btn btn-outline-light">登入</button>
-        <input @click="logout" type="button" id="btn-test" class="btn btn-outline-light" value="logout">
         <!--
         <div class="social">
             <div class="go"><i class="fab fa-google"></i>  Google</div>
@@ -24,47 +23,34 @@
     </form>
 </template>
 
-<script>
-    export default {
-        data() {
-            return {
-                account: '',
-                password: '',
-            };
-        },
-        methods: {
-            login() {
-                $fetch({
-                    url: "auth/login",
-                    method: "post",
-                    data: {
-                        account: this.account,
-                        password: this.password
-                    }
-                })
-                .then((res) => {
-                    localStorage.setItem("token", res.authorisation.token);
-                });
-            },
-            logout() {
-                $fetch({
-                    url: "auth/logout",
-                    method: "get",
-                    useToken: true,
-                    origin: true
-                })
-                .then((res) => {
-                    if (res.status == 200) {
-                        localStorage.clear();
-                    }
-                });
+<script setup>
+    import { ref, getCurrentInstance } from 'vue'
+
+    const Vue = getCurrentInstance().proxy;
+    let account  = ref('');
+    let password = ref('');
+
+    function login()
+    {
+        $fetch({
+            url: "/auth/login",
+            method: "post",
+            data: {
+                account: account.value,
+                password: password.value
             }
-        }
-    } 
+        })
+        .then((res) => {
+            if (res.status != false) {
+                Vue.$pinia.login(res.authorisation.token);
+                Vue.$router.push({ name: "index" });
+            }
+        });
+    }
 </script>
 
 <!--Stylesheet-->
-<style media="screen">
+<style media="screen" scoped>
     *,
     *:before,
     *:after{

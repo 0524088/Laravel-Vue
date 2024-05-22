@@ -12,6 +12,7 @@ Route::prefix("/auth")->controller(Auth::class)->group(function() {
     Route::post("login", "login");        // 登入
     Route::post("register", "register");  // 註冊
     Route::get("logout", "logout")->middleware([JwtMiddleware::class]); // 登出
+    Route::get("checkLoginStatus", "checkLoginStatus")->middleware([JwtMiddleware::class]); // 判斷登入狀態
 });
 
 Route::middleware([JwtMiddleware::class])->group(function() {

@@ -102,4 +102,22 @@ class Auth
             ]
         ]);
     }
+
+    /**
+     * 判斷是否在線
+     */
+    public function checkLoginStatus()
+    {
+        if (auth()->check()) {
+            return response()->json([
+                "status"   => "success",
+                "user"     => auth()->user(),
+            ]);
+        } else {
+            return response()->json([
+                "status" => "success",
+                "user"   => null
+            ]);
+        }
+    }
 }
