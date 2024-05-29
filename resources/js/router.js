@@ -69,40 +69,36 @@ const router = createRouter({
 const $pinia = useStore(pinia);
 
 // 中間件 - 驗證登入狀態
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from) => {
     NProgress.start();
-    // 透過前端路由
-    if (sessionStorage.getItem("isRouteNavigation")) {
-        const res = await $fetch({
-            url: "/auth/checkLoginStatus",
-            method: "GET",
-            token: $pinia.$state.token
-        });
-    
-        const user = res.user;
-        const route = to.name;
-    
-        if (user && route == "login") {
-            // 已登入且為登入頁面
-            return { name: "index" };
-        }
-        if (!user && route != "login") {
-            // 未登入且非登入頁面
-            return { name: "login" };
-        }
+
+    // 因身分檢查而轉址就不再做一次檢查
+    if (sessionStorage.getItem("routeAuthCheck")) {
+        sessionStorage.removeItem("routeAuthCheck");
+        return;
     }
-    // 刷新過頁面
-    else {
-        const res = await $fetch({
-            url: "/auth/checkLoginStatus",
-            method: "GET",
-            useToken: true
-        });
+
+    const res = await $fetch({
+        url: "/auth/checkLoginStatus",
+        method: "GET",
+        token: $pinia.$state.token
+    });
+
+    const user = res.user;
+    const route = to.name;
+    if (user && route == "login") {
+        // 已登入且為登入頁面
+        sessionStorage.setItem("routeAuthCheck", true);
+        return { name: "index" };
+    }
+    if (!user && route != "login") {
+        // 未登入且非登入頁面
+        sessionStorage.setItem("routeAuthCheck", true);
+        return { name: "login" };
     }
 });
 
 router.afterEach((to) => {
-    sessionStorage.setItem("isRouteNavigation", "true");
     NProgress.done();
 });
   
