@@ -31,6 +31,6 @@ async function $fetch({ url, method, data = null, token = "", origin = false, no
         return response.json();
 
     } catch (error) {
-        console.error("$fetch 提交錯誤：", error);
+        console.error(error);
     }
 }

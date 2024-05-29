@@ -11,6 +11,9 @@
         <!-- NProgress 進度條 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress/nprogress.css">
 
+        <!-- Sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <!-- 引入 Vue app -->
         @vite('resources/js/main.js')
 

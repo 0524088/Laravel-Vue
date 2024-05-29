@@ -36,7 +36,7 @@ class Auth
             return response()->json([
                 "status"  => "error",
                 "message" => "帳號或密碼錯誤",
-            ], 401);
+            ]);
         }
 
         return response()->json([

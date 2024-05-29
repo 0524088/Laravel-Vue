@@ -1,8 +1,10 @@
 <template></template>
 <script setup>
     import { getCurrentInstance } from 'vue'
+    import sweetalert from '@/modules/sweetalert2'
 
     const Vue = getCurrentInstance().proxy;
+    const swal = new sweetalert();
 
     $fetch({
         url: "/auth/logout",
@@ -13,7 +15,12 @@
     .then((res) => {
         if (res.status == 200) {
             Vue.$pinia.logout();
-            Vue.$router.push({ name: "login" });
+            swal.show({ title: "登出成功", icon: "success" })
+            .then(() => {
+                Vue.$router.push({ name: "login" });
+            });
+        } else {
+            swal.show({ title: "登出失敗" });
         }
     });
 </script>

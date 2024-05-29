@@ -56,13 +56,21 @@
 
 <script setup>
     import { ref, getCurrentInstance } from 'vue'
+    import sweetalert from '@/modules/sweetalert2'
 
+    const swal = new sweetalert();
     const Vue = getCurrentInstance().proxy;
     let account  = ref('');
     let password = ref('');
 
     function login()
     {
+        if (!account.value || !password.value) {
+            swal.show({ title: "請輸入帳號密碼" });
+            return;
+        }
+
+        swal.loading({ title: "登入中" });
         $fetch({
             url: "/auth/login",
             method: "post",
@@ -72,9 +80,15 @@
             }
         })
         .then((res) => {
-            if (res.status != false) {
+            swal.close();
+            if (res.status == "success") {
                 Vue.$pinia.login(res.authorisation.token);
-                Vue.$router.push({ name: "index" });
+                swal.show({ title: "登入成功", icon: "success" })
+                .then(() => {
+                    Vue.$router.push({ name: "index" });
+                });
+            } else {
+                swal.show({ title: res.message });
             }
         });
     }
