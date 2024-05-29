@@ -9,13 +9,23 @@ use App\Models\User as UserModel;
 
 class User
 {
-
+    /**
+     * 註冊
+     */
     public function create($account, $password)
     {
-        return UserModel::create([
+
+        $user = UserModel::firstOrNew([
             "account"  => $account,
-            "password" => Hash::make($password),
         ]);
+
+        if (!$user->exists) {
+            $user->password = Hash::make($password);
+            $user->save();
+            return $user;
+        } else {
+            return false;
+        }
     }
 
     /**

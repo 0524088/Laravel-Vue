@@ -21,7 +21,7 @@
     </head>
     <body>
         <div id="app">
-            <Navbar />
+            <Content />
         </div>
 
         <!-- NProgress 進度條 -->

@@ -27,7 +27,7 @@ const routes = [
         component: components.login,
         meta: {
             inMenu: false,
-            text: "Login",
+            text: "登入",
         },
     },
     {
@@ -36,7 +36,16 @@ const routes = [
         component: components.logout,
         meta: {
             inMenu: false,
-            text: "Logout",
+            text: "登出",
+        },
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: components.register,
+        meta: {
+            inMenu: false,
+            text: "註冊",
         },
         
     },
@@ -46,7 +55,7 @@ const routes = [
         component: components.index,
         meta: {
             inMenu: false,
-            text: "Index",
+            text: "首頁",
         },
     },
     {
@@ -55,7 +64,7 @@ const routes = [
         component: components.about,
         meta: {
             inMenu: true,
-            text: "About",
+            text: "關於",
         },
     }
 ];
@@ -79,11 +88,11 @@ router.beforeEach(async (to, from) => {
 
     const user = res.user;
     const route = to.name;
-    if (user && route == "login") {
+    if (user && (route == "login" || route == "register")) {
         // 已登入且為登入頁面
         return { name: "index" };
     }
-    if (!user && route != "login") {
+    if (!user && (route != "login" && route != "register" )) {
         // 未登入且非登入頁面
         return { name: "login" };
     }

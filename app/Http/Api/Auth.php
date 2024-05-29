@@ -62,6 +62,12 @@ class Auth
             return $validation["return"];
 
         $user = $this->repositorysUser->create($request->account, $request->password);
+        if (!$user) {
+            return response()->json([
+                "status"  => "error",
+                "message" => "該帳號已註冊"
+            ]);
+        }
         $token = auth()->login($user);
         return response()->json([
             "status"  => "success",
