@@ -1,4 +1,4 @@
-import * as components from './components'
+import * as components from '@/components'
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress'
 import pinia from '@/stores/index.js'
