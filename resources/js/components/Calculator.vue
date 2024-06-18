@@ -1,62 +1,56 @@
 <template>
     <div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" @click="handleClick" @keydown="handleKeyDown" id="calculatorOffcanvas">
-        <div class="offcanvas-body">
-            <div class="container calculate-width">
-                <div class="row justify-content-center align-items-center calculate-width">
-                    <div class="border border-3 border-secondary rounded calculate-width col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-                        <div class="m-1 calculate-width">
-                            <div class="border border-1 border-secondary mt-1">
-                                <div class="row no-gutters">
-                                    <div class="row fw-bold mb-1">
-                                        <div class="col-1 text-start ms-1">{{ sign }}&nbsp;</div>
-                                    </div>
-                                    <div class="row fw-bold mb-1" :class="{ 'invisible' : !isOverflow }">
-                                        <div class="col text-start ms-1">E</div>
-                                    </div>
-                                    <div class="row h2 m-auto">
-                                        <div class="col text-end m-auto">&nbsp;{{ showing }}</div>
-                                    </div>
-                                </div>
+        <div class="offcanvas-body d-flex justify-content-center">
+            <div class="calculator border border-3 border-secondary rounded p-3">
+                <div class="border border-1 border-secondary mb-3 p-2">
+                    <div class="row">
+                        <div class="col-1 text-start ms-1 d-flex flex-nowrap">{{ sign }}&nbsp;</div>
+                    </div>
+                    <div class="row d-flex flex-nowrap" :class="{ 'invisible' : !isOverflow }">
+                        <div class="col text-start ms-1">E</div>
+                    </div>
+                    <div class="row h2 m-auto d-flex flex-nowrap">
+                        <div class="col text-end m-auto">&nbsp;{{ showing }}</div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col p-1"><button type="button" class="btn btn-outline-danger w-100" value="c">C</button></div>
+                        <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="÷">÷</button></div>
+                        <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="×">×</button></div>
+                        <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="-">-</button></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="7">7</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="8">8</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="9">9</button></div>
                             </div>
-                            <div class="row no-gutters">
-                                <div class="col p-1"><button type="button" class="btn btn-outline-danger w-100" value="c">C</button></div>
-                                <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="÷">÷</button></div>
-                                <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="×">×</button></div>
-                                <div class="col p-1"><button type="button" class="btn btn-outline-primary w-100" value="-">-</button></div>
+                            <div class="row">
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="4">4</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="5">5</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="6">6</button></div>
                             </div>
-                            <div class="row no-gutters">
-                                <div class="col-9">
-                                    <div class="row no-gutters">
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="7">7</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="8">8</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="9">9</button></div>
-                                    </div>
-                                    <div class="row no-gutters">
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="4">4</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="5">5</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="6">6</button></div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="w-100 h-100"><button type="button" class="btn btn-outline-primary w-100 h-100" value="+">+</button></div>
-                                </div>
+                        </div>
+                        <div class="col-3 p-1">
+                            <button type="button" class="btn btn-outline-primary w-100 h-100" value="+">+</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-9">
+                            <div class="row">
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="1">1</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="2">2</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="3">3</button></div>
                             </div>
-                            <div class="row no-gutters">
-                                <div class="col-9">
-                                    <div class="row no-gutters">
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="1">1</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="2">2</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-secondary w-100" value="3">3</button></div>
-                                    </div>
-                                    <div class="row no-gutters">
-                                        <div class="col-8 p-1"><button type="button" class="btn btn-outline-secondary w-100" value="0">0</button></div>
-                                        <div class="col p-1"><button type="button" class="btn btn-outline-warning w-100" value=".">.</button></div>
-                                    </div>
-                                </div>
-                                <div class="col-3 p-1">
-                                    <div class="w-100 h-100"><button type="button" class="btn btn-outline-primary w-100 h-100" value="=">=</button></div>
-                                </div>
+                            <div class="row">
+                                <div class="col-8 p-1"><button type="button" class="btn btn-outline-secondary w-100" value="0">0</button></div>
+                                <div class="col p-1"><button type="button" class="btn btn-outline-warning w-100" value=".">.</button></div>
                             </div>
+                        </div>
+                        <div class="col-3 p-1">
+                            <button type="button" class="btn btn-outline-primary w-100 h-100" value="=">=</button>
                         </div>
                     </div>
                 </div>
@@ -65,9 +59,15 @@
     </div>
 </template>
 
-<style>
-    .calculate-width {
-        min-width: 160px !important;
+<style scoped>
+    .calculator {
+        max-width: 350px;
+        min-width: 250px;
+    }
+    .screen {
+        height: 100px;
+        display: flex;
+        flex-direction: column;
     }
 </style>
 
