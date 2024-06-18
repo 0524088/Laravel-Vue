@@ -1,5 +1,5 @@
 <template>
-    <div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" @click="handleClick" @keydown="handleKeyDown" id="calculatorOffcanvas">
+    <div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" @click="handleClick" @keydown="handleKeyDown" id="calculatorOffcanvas" ref="CalculatorOffcanvas">
         <div class="offcanvas-body d-flex justify-content-center">
             <div class="calculator border border-3 border-secondary rounded p-3">
                 <div class="border border-1 border-secondary mb-3 p-2">
@@ -72,7 +72,10 @@
 </style>
 
 <script setup>
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
+
+
+    const CalculatorOffcanvas = ref(null);
 
     let isOverflow = false;
     let showing = ref(0);
@@ -91,16 +94,19 @@
         }
     );
 
+    onMounted(() => {
+        // 監聽 Offcanvas 隱藏事件
+        CalculatorOffcanvas.value.addEventListener("hidden.bs.offcanvas", () => {
+            calculateEvent("c");
+        });
+    });
+
     function handleClick(e) {
-        const value = e.target.value;
-        calculateEvent(value);
+        calculateEvent(e.target.value);
     }
 
     function handleKeyDown(e) {
-        if (e.key == "Escape")
-            calculateEvent("c");
-        else
-            calculateEvent(e.key);
+        calculateEvent(e.key);
     }
 
     // 計算機邏輯
