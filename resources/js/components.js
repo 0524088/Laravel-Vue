@@ -5,6 +5,7 @@ import login from '@/components/Login.vue'
 import logout from '@/components/Logout.vue'
 import register from '@/components/Register.vue'
 import calculator from '@/components/Calculator.vue'
+import product from '@/components/Product.vue'
 
 export {
     http_404,
@@ -13,5 +14,6 @@ export {
     login,
     logout,
     register,
-    calculator
+    calculator,
+    product
 }

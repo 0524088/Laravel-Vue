@@ -55,8 +55,19 @@ const routes = [
         component: components.index,
         meta: {
             inMenu: false,
+            needLogin: false,
             text: "首頁",
         },
+    },
+    {
+        path: "/product",
+        name: "product",
+        component: components.product,
+        meta: {
+            inMenu: true,
+            needLogin: true,
+            text: "商品管理",
+        }
     },
     {
         path: "/about",
@@ -64,9 +75,10 @@ const routes = [
         component: components.about,
         meta: {
             inMenu: true,
+            needLogin: true,
             text: "關於",
         },
-    }
+    },
 ];
 
 // 註冊路由

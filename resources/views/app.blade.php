@@ -17,13 +17,13 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- 引入 Vue app -->
-        @vite('resources/js/main.js')
+        @vite('resources/js/app.js')
 
         <script src="{{ asset('js/helper.js') }}"></script>
     </head>
     <body>
         <div id="app">
-            <Content />
+            <content/>
         </div>
 
         <!-- NProgress 進度條 -->
