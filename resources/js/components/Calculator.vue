@@ -168,20 +168,23 @@
 
             case "=":
                 lastAction = 'equals';
+
+                // 有輸入第二個數則計算
                 if (number[1] !== '') {
                     number[0] = calculate(number, sign.value);
                     number[1] = '';
-                    sign.value = value;
-
-                    // 保留前十位數
-                    if (number[0].toString().length >= digitLimit_with_thousand) {
-                        number[0] = number[0].toString().slice(0, digitLimit);
-                        isOverflow = true;
-                    }
-                    
-                    showing.value = number[0];
-                    countFlag = false;
                 }
+
+                // 保留前十位數
+                if (number[0].toString().length >= digitLimit_with_thousand) {
+                    number[0] = number[0].toString().slice(0, digitLimit);
+                    isOverflow = true;
+                }
+
+                // 顯示
+                showing.value = number[0];
+                sign.value = value;
+                countFlag = false;
                 break;
 
             case "c":
