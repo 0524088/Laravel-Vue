@@ -4,10 +4,10 @@
             <div class="calculator border border-3 border-secondary rounded p-3">
                 <div class="border border-1 border-secondary mb-3 p-2">
                     <div class="row">
-                        <div class="col-1 text-start ms-1 d-flex flex-nowrap">{{ sign }}&nbsp;</div>
+                        <div class="col-1 text-start ms-1 d-flex flex-nowrap fw-bold ff-calculate-sign">&nbsp;{{ sign }}</div>
                     </div>
-                    <div class="row d-flex flex-nowrap" :class="{ 'invisible' : !isOverflow }">
-                        <div class="col text-start ms-1">E</div>
+                    <div class="row d-flex flex-nowrap fw-bold ff-calculate-sign" :class="{ 'invisible' : !isOverflow }">
+                        <div class="col text-start ms-1">&nbsp;E</div>
                     </div>
                     <div class="row h2 m-auto d-flex flex-nowrap">
                         <div class="col text-end m-auto">&nbsp;{{ showing }}</div>
@@ -68,6 +68,9 @@
         height: 100px;
         display: flex;
         flex-direction: column;
+    }
+    .ff-calculate-sign {
+        font-family: STIXGeneral, 'Times New Roman', serif;
     }
 </style>
 
