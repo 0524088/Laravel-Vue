@@ -62,7 +62,7 @@
 <style scoped>
     .calculator {
         max-width: 350px;
-        min-width: 250px;
+        min-width: 300px;
     }
     .screen {
         height: 100px;
